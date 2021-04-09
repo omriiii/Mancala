@@ -17,6 +17,9 @@ public class MancalaGame
 	//  - Draw the game board! (Add paintIcon methods to Pocket/MancalaPocket, add them to the JFrame and make sure theyre drawn correctly)
 	//  - Implement paintRocks for Pocket/MancalaPocket
 	
+	Pocket[] pockets;
+	Stack<PlayerAction> player_actions;
+	
 	public MancalaGame()
 	{
 		// 0  - A1
@@ -28,11 +31,11 @@ public class MancalaGame
 		// ...
 		// 13 - B6
 		// 14 - Player B mancala pocket
-		Pocket[] pockets = new Pocket[14];
+		pockets = new Pocket[14];
 		pockets[6] = new MancalaPocket();
 		pockets[14] = new MancalaPocket();
 		
-	    Stack<PlayerAction> player_actions = new Stack<PlayerAction>();
+	    player_actions = new Stack<PlayerAction>();
 	}
 	
 	public void run()
