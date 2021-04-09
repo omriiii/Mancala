@@ -29,6 +29,8 @@ public class MancalaGame
 		// 13 - B6
 		// 14 - Player B mancala pocket
 		Pocket[] pockets = new Pocket[14];
+		pockets[6] = new MancalaPocket();
+		pockets[14] = new MancalaPocket();
 		
 	    Stack<PlayerAction> player_actions = new Stack<PlayerAction>();
 	}
