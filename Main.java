@@ -3,7 +3,8 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		System.out.print("Hello world!");
+		MancalaGame mancala_game = new MancalaGame();
+		mancala_game.run();
 	}
 
 }
