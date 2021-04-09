@@ -11,6 +11,12 @@ import javax.swing.Timer;
 
 public class MancalaGame 
 {
+	//  TODO
+	//	- Add undo method (adding trigger to button to pop from stack. implementation can come later)
+	//  - Add initialization method (adding trigger to button to give user prompt for a number and initialize each pocket with that amount of stones)
+	//  - Draw the game board! (Add paintIcon methods to Pocket/MancalaPocket, add them to the JFrame and make sure theyre drawn correctly)
+	//  - Implement paintRocks for Pocket/MancalaPocket
+	
 	public MancalaGame()
 	{
 		// 0  - A1
