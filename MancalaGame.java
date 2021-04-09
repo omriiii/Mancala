@@ -2,6 +2,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +23,8 @@ public class MancalaGame
 		// 13 - B6
 		// 14 - Player B mancala pocket
 		Pocket[] pockets = new Pocket[14];
+		
+	    Stack<PlayerAction> player_actions = new Stack<PlayerAction>();
 	}
 	
 	public void run()
@@ -38,7 +41,6 @@ public class MancalaGame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
-		
 	}
 	
 
