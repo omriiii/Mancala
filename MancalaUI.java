@@ -15,10 +15,12 @@ public class MancalaUI
 	JFrame frame;
 	MancalaGame game;
 	
+	ArrayList<JLabel> pocket_labels;
+	
 	public MancalaUI(MancalaGame game)
 	{
 		this.game = game;
-		
+		pocket_labels = new ArrayList<JLabel>();
 		
 		frame = new JFrame();
 		frame.setLayout(new FlowLayout());
@@ -26,8 +28,8 @@ public class MancalaUI
 		// Mancala Board
 		for(var i = 0; i < game.pockets.length; i++)
 		{
-			
-			frame.add(new JLabel(game.pockets[i]));
+			pocket_labels.add(new JLabel(game.pockets[i]));
+			frame.add(pocket_labels.get(i));
 		}
 
 		// Buttons 
@@ -46,6 +48,13 @@ public class MancalaUI
 		frame.setVisible(true);
 	}
 	
+	public void repaintBoard()
+	{
+		for(int i = 0; i < pocket_labels.size(); i++)
+		{
+			pocket_labels.get(i).repaint();
+		}
+	}
 
 	public ActionListener createStartGameListener()
 	{
@@ -54,7 +63,7 @@ public class MancalaUI
 			{
 				String result = (String) JOptionPane.showInputDialog(
 			               frame,
-			               "Enter the amount of stones per pockets", 
+			               "Enter the amount of stones per pocket", 
 			               "Mancala Game Option",            
 			               JOptionPane.PLAIN_MESSAGE,
 			               null,            
@@ -62,6 +71,7 @@ public class MancalaUI
 			               "4");
 				
 				game.initializeBoard(Integer.parseInt(result));
+				repaintBoard();
 			}
 		};
 	}
@@ -72,6 +82,7 @@ public class MancalaUI
 			public void actionPerformed(ActionEvent event)
 			{
 				game.undo();
+				repaintBoard();
 			}
 		};
 	}

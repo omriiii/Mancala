@@ -32,6 +32,10 @@ public class MancalaGame
 		// 12 - B6
 		// 13 - Player B mancala pocket
 		pockets = new Pocket[14];
+		for(var i = 0; i < pockets.length; i++)
+		{
+			pockets[i] = new Pocket();
+		}
 		pockets[6] = new MancalaPocket();
 		pockets[13] = new MancalaPocket();
 		
