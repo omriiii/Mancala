@@ -12,10 +12,6 @@ import javax.swing.Timer;
 
 public class MancalaGame 
 {
-	//  TODO
-	//  - Draw the game board! (Add paintIcon methods to Pocket/MancalaPocket, add them to the JFrame and make sure theyre drawn correctly)
-	//  - Implement paintRocks for Pocket/MancalaPocket
-	
 	
 	Pocket[] pockets;
 	Stack<PlayerAction> player_actions;
@@ -45,7 +41,7 @@ public class MancalaGame
 
 	public void initializeBoard(int stones_per_pocket)
 	{
-		System.out.print("Starting up a game of mancala with " + stones_per_pocket + " stones per pocket!");
+		System.out.print("Starting up a game of mancala with " + stones_per_pocket + " stones per pocket!\n");
 		for(var i = 0; i < pockets.length; i++)
 		{
 			pockets[i].stones = stones_per_pocket;

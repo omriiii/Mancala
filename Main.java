@@ -7,6 +7,7 @@ public class Main
 	//  - Add Event Listeners to when a player clicks on certain pockets
 	//  - Add some method that checks if the game is over and calculates who wins
 	//  - Implement undo functionality
+	//  - Should probably move Pocket and MancalaPocket to be private classes of MancalaGame...
 	
 	public static void main(String[] args)
 	{
