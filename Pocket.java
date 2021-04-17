@@ -29,33 +29,34 @@ public class Pocket implements Icon
 		
 		int c_x = x+(circle_r/2); // pocket center x coordinate
 		int c_y = y+(circle_r/2); // pocket center y coordinate
-		int stone_r = 10;
 		ArrayList<Ellipse2D.Double> stones_elipses = new ArrayList<Ellipse2D.Double>();
-		switch(stones)
+		
+		int stone_cnt = stones;
+		int line_height = 12;
+		int d_y = c_y+(Math.max(0,(stone_cnt/3)-1)*line_height);
+		
+		for(int i = 0; i < ((stones/3)+1); i++)
 		{
-			case 1:
-				stones_elipses.add(makeStoneElipse(c_x, c_y));
-				break;
+			if(stone_cnt == 1)
+			{
+				stones_elipses.add(makeStoneElipse(c_x, d_y));
+			}
+			else if(stone_cnt == 2)
+			{
+				stones_elipses.add(makeStoneElipse(c_x-7, d_y));
+				stones_elipses.add(makeStoneElipse(c_x+7, d_y));
+			}
+			else if(stone_cnt > 2)
+			{
+				stones_elipses.add(makeStoneElipse(c_x-15, d_y));
+				stones_elipses.add(makeStoneElipse(c_x,    d_y));
+				stones_elipses.add(makeStoneElipse(c_x+15, d_y));
+				stone_cnt = stone_cnt - 3;
+			}
 			
-			case 2:
-				stones_elipses.add(makeStoneElipse(c_x-7, c_y));
-				stones_elipses.add(makeStoneElipse(c_x+7, c_y));
-				break;
-				
-			case 3:
-				stones_elipses.add(makeStoneElipse(c_x, c_y-6));
-				stones_elipses.add(makeStoneElipse(c_x-7, c_y+6));
-				stones_elipses.add(makeStoneElipse(c_x+7, c_y+6));
-				break;
-				
-			case 4:
-				stones_elipses.add(makeStoneElipse(c_x-7, c_y-6));
-				stones_elipses.add(makeStoneElipse(c_x+7, c_y-6));
-				stones_elipses.add(makeStoneElipse(c_x-7, c_y+6));
-				stones_elipses.add(makeStoneElipse(c_x+7, c_y+6));
-				break;
-				
+			d_y = d_y - line_height;
 		}
+
 		g2.draw(pocket_outline);
 		for(int i = 0; i < stones_elipses.size(); i++)
 		{
