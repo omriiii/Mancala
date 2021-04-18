@@ -49,7 +49,7 @@ public class MancalaUI
 		frame.add(start_game_btn);
 		frame.add(undo_btn);
 		
-		// 
+		// Display Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
@@ -71,6 +71,7 @@ public class MancalaUI
 				// Move stones in pocket here
 				// (you'd have to assign each pocket it's index, reference that index in here and pass it onto some "movePocket" function that'd be inside the game object)
 				repaintBoard();
+				// Calculate if the game is over here!
 			}
 		};
 	}
