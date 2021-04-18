@@ -1,6 +1,8 @@
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -32,6 +34,11 @@ public class MancalaUI
 			frame.add(pocket_labels.get(i));
 		}
 
+		for(var i = 0; i < game.normal_pocket_idx.length; i++)
+		{
+			pocket_labels.get(game.normal_pocket_idx[i]).addMouseListener(createPocketListener());
+		}
+
 		// Buttons 
 		JButton start_game_btn = new JButton("Start Game");
 		start_game_btn.addActionListener(createStartGameListener());
@@ -56,6 +63,18 @@ public class MancalaUI
 		}
 	}
 
+	public MouseAdapter createPocketListener() 
+	{
+		return new MouseAdapter() {
+			public void mouseClicked(MouseEvent e)
+			{
+				// Move stones in pocket here
+				// (you'd have to assign each pocket it's index, reference that index in here and pass it onto some "movePocket" function that'd be inside the game object)
+				repaintBoard();
+			}
+		};
+	}
+	
 	public ActionListener createStartGameListener()
 	{
 		return new ActionListener() {

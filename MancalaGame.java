@@ -15,6 +15,7 @@ public class MancalaGame
 	
 	Pocket[] pockets;
 	Stack<PlayerAction> player_actions;
+	final int[] normal_pocket_idx = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12};
 	
 	public MancalaGame()
 	{
@@ -28,9 +29,9 @@ public class MancalaGame
 		// 12 - B6
 		// 13 - Player B mancala pocket
 		pockets = new Pocket[14];
-		for(var i = 0; i < pockets.length; i++)
+		for(var i = 0; i < normal_pocket_idx.length; i++)
 		{
-			pockets[i] = new Pocket();
+			pockets[normal_pocket_idx[i]] = new Pocket();
 		}
 		pockets[6] = new MancalaPocket();
 		pockets[13] = new MancalaPocket();
