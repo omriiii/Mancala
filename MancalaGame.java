@@ -65,6 +65,59 @@ public class MancalaGame
 		}
 	}
 	
+	public boolean isOver()
+	{
+		boolean player0_has_rocks = false;
+		boolean player1_has_rocks = false;
+		for(var i = 0; i < normal_pocket_idx.length/2; i++)
+		{
+			if(pockets[normal_pocket_idx[i]].getStones() > 0)
+			{
+				player0_has_rocks = true;
+				break;
+			}
+		}
+		
+		for(var i = normal_pocket_idx.length/2; i < normal_pocket_idx.length; i++)
+		{
+			if(pockets[normal_pocket_idx[i]].getStones() > 0)
+			{
+				player1_has_rocks = true;
+				break;
+			}
+		}
+		
+		return ((!player0_has_rocks) || (!player1_has_rocks));
+	}
+	
+	// Move all stones to their respective MancalaPocket
+	public void wrapUp()
+	{
+		for(var i = 0; i < normal_pocket_idx.length/2; i++)
+		{
+			pockets[6].stones = pockets[6].stones + pockets[normal_pocket_idx[i]].getStones();
+			pockets[normal_pocket_idx[i]].stones = 0;
+		}
+		
+		for(var i = normal_pocket_idx.length/2; i < normal_pocket_idx.length; i++)
+		{
+			pockets[13].stones = pockets[13].stones + pockets[normal_pocket_idx[i]].getStones();
+			pockets[normal_pocket_idx[i]].stones = 0;
+		}
+	}
+	
+	public int getWinner()
+	{
+		if(pockets[6].getStones() < pockets[13].getStones())
+		{
+			return 1;
+		}
+		else if(pockets[6].getStones() > pockets[13].getStones())
+		{
+			return 0;
+		}
+		return -1; // It's a tie.
+	}
 	public void undo()
 	{
 		if(!player_actions.isEmpty())

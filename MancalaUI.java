@@ -69,8 +69,23 @@ public class MancalaUI
 			public void mouseClicked(MouseEvent e)
 			{
 				game.doAction(((Pocket)((JLabel)e.getSource()).getIcon()).getIdx());
-				repaintBoard();
+				
 				// Calculate if the game is over here!
+				if(game.isOver())
+				{
+					game.wrapUp(); // Move all remaining stones to their respective MancalaPocket
+					int winner_index = game.getWinner();
+					if (winner_index >= 0)
+					{
+						JOptionPane.showMessageDialog(frame, "Game over!\nPlayer " + winner_index + " has won!");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(frame, "Game over!\nTie.");
+					}
+				}
+
+				repaintBoard();
 			}
 		};
 	}
