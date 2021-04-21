@@ -68,8 +68,7 @@ public class MancalaUI
 		return new MouseAdapter() {
 			public void mouseClicked(MouseEvent e)
 			{
-				// Move stones in pocket here
-				// (you'd have to assign each pocket it's index, reference that index in here and pass it onto some "movePocket" function that'd be inside the game object)
+				game.doAction(((Pocket)((JLabel)e.getSource()).getIcon()).getIdx());
 				repaintBoard();
 				// Calculate if the game is over here!
 			}

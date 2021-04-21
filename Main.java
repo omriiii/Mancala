@@ -4,7 +4,6 @@ public class Main
 	//  TODO
 	//  - Implement paintRocks for Pocket/MancalaPocket
 	//  - Make sure the game board is being drawn correctly
-	//  - Implement method that moves rocks inside of pockets in game object
 	//  - Add some method that checks if the game is over and calculates who wins
 	//  - Implement undo functionality
 	//  - Should probably move Pocket and MancalaPocket to be private classes of MancalaGame...

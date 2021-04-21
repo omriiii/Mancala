@@ -13,6 +13,12 @@ import javax.swing.Icon;
 public class Pocket implements Icon
 {
 	int stones = 0;
+	int idx;
+	
+	public Pocket(int idx)
+	{
+		this.idx = idx;
+	}
 	
 	private int circle_r = 50;
 	private int width = 60;
@@ -78,7 +84,12 @@ public class Pocket implements Icon
 	}
 
 	@Override
-	public int getIconHeight() {
+	public int getIconHeight() 
+	{
 		return height;
 	}
+	
+	// Getters 
+	public int getIdx() { return idx; }
+	public int getStones() { return stones; }
 }

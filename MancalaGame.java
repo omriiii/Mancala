@@ -31,10 +31,10 @@ public class MancalaGame
 		pockets = new Pocket[14];
 		for(var i = 0; i < normal_pocket_idx.length; i++)
 		{
-			pockets[normal_pocket_idx[i]] = new Pocket();
+			pockets[normal_pocket_idx[i]] = new Pocket(normal_pocket_idx[i]);
 		}
-		pockets[6] = new MancalaPocket();
-		pockets[13] = new MancalaPocket();
+		pockets[6] = new MancalaPocket(6);
+		pockets[13] = new MancalaPocket(13);
 		
 	    player_actions = new Stack<PlayerAction>();
 	}
@@ -51,11 +51,25 @@ public class MancalaGame
 		pockets[13].stones = 0;
 	}
 	
+	public void doAction(int pocket_index)
+	{
+		player_actions.add(new PlayerAction(pocket_index, pockets[pocket_index].stones));
+		int stones = pockets[pocket_index].stones;
+		pockets[pocket_index].stones = 0;
+		
+		while(stones > 0)
+		{
+			pocket_index=(pocket_index+1)%pockets.length;
+			pockets[pocket_index].stones++;
+			stones--;
+		}
+	}
+	
 	public void undo()
 	{
 		if(!player_actions.isEmpty())
 		{
-			//player_actions.pop();
+			PlayerAction action = player_actions.pop();
 			// Do stuff here
 		}
 	}
