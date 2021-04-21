@@ -2,7 +2,8 @@
 public class MancalaTest 
 {
 	//  TODO
-	//  - Implement paintRocks for Pocket/MancalaPocket
+	//	- Add pocket label next to pocket (eg. A1, A2, A3, A4, etc...)
+	//  - Make sure Pocket draws stones properly without having strange offsets
 	//  - Make sure the game board is being drawn correctly
 	//  - Implement undo functionality
 	//	- Add Board Style menu at the beginning and implement with Strategy pattern (Should probably do something simple like color of MancalaPocket)
