@@ -60,16 +60,21 @@ public class MancalaPocket extends Pocket
 		int name_w = (int) g2.getFontMetrics().getStringBounds(player_letter, g2).getWidth();
 		
 		
-		
 
-        g2.drawString(player_letter,c_x-(name_w/2),y+height-7);
+
+		g2.setColor(Color.white);
+		g2.fill(pocket_outline);
+		g2.setColor(Color.black);
 		g2.draw(pocket_outline);
+		
 		for(int i = 0; i < stones_elipses.size(); i++)
 		{
 			g2.setColor(Color.black);
 			g2.fill(stones_elipses.get(i));
 			g2.draw(stones_elipses.get(i));
 		}
+		
+        g2.drawString(player_letter,c_x-(name_w/2),y+height-7);
 	}
     
 }

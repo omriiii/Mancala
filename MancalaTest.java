@@ -4,7 +4,6 @@ public class MancalaTest
 	/*
 	  
 	TODO
-		- Add "player x turn" functionality (the next 2 tasks are dependent on it)
 		- Make sure Pocket draws stones properly without having strange offsets
 		- Implement undo functionality
 		- Add Board Style menu at the beginning and implement with Strategy pattern (Should probably do something simple like color of MancalaPocket)

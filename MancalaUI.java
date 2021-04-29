@@ -54,6 +54,7 @@ public class MancalaUI
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(590, 240);
 		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 	
 	public void repaintBoard()
@@ -89,7 +90,8 @@ public class MancalaUI
 						JOptionPane.showMessageDialog(frame, "Game over!\nTie.");
 					}
 				}
-
+				
+				updatePocketHighlights();
 				repaintBoard();
 			}
 		};
@@ -110,6 +112,7 @@ public class MancalaUI
 			               "4");
 				
 				game.initializeBoard(Integer.parseInt(result));
+				updatePocketHighlights();
 				repaintBoard();
 			}
 		};
@@ -124,6 +127,28 @@ public class MancalaUI
 				repaintBoard();
 			}
 		};
+	}
+	
+	void updatePocketHighlights()
+	{
+		
+		for(int i = 0; i < game.normal_pocket_idxs.length; i++)
+		{
+			game.pockets[game.normal_pocket_idxs[i]].setHighlight(false);
+		}
+		
+		if(game.isOver()) { return; }
+		
+		int[] idxs = game.player_a_normal_pocket_idxs;
+		if(game.turn_flag)
+		{
+			idxs = game.player_b_normal_pocket_idxs;
+		}
+		
+		for(int i = 0; i < idxs.length; i++)
+		{
+			game.pockets[idxs[i]].setHighlight(true);
+		}
 	}
 	
 	// Helper Methods
@@ -157,9 +182,9 @@ public class MancalaUI
 			addPocketToFrame(pocket_labels.get(lower_idxs[i]), 10+(70*(i+1)), 80);
 		}
 		
-		for(var i = 0; i < game.normal_pocket_idx.length; i++)
+		for(var i = 0; i < game.normal_pocket_idxs.length; i++)
 		{
-			pocket_labels.get(game.normal_pocket_idx[i]).addMouseListener(createPocketListener());
+			pocket_labels.get(game.normal_pocket_idxs[i]).addMouseListener(createPocketListener());
 		}
 	}
 	

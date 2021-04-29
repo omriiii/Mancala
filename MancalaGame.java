@@ -15,8 +15,11 @@ public class MancalaGame
 	
 	Pocket[] pockets;
 	Stack<PlayerAction> player_actions;
-	final int[] normal_pocket_idx = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12};
+	final int[] player_a_normal_pocket_idxs = {0, 1, 2, 3, 4, 5,};
+	final int[] player_b_normal_pocket_idxs = {7, 8, 9, 10, 11, 12};
+	final int[] normal_pocket_idxs = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12};
 	boolean turn_flag;
+	boolean is_over;
 	
 	public MancalaGame()
 	{
@@ -30,20 +33,22 @@ public class MancalaGame
 		// 12 - B6
 		// 13 - Player B mancala pocket
 		pockets = new Pocket[14];
-		for(var i = 0; i < normal_pocket_idx.length; i++)
+		for(var i = 0; i < normal_pocket_idxs.length; i++)
 		{
-			pockets[normal_pocket_idx[i]] = new Pocket(normal_pocket_idx[i]);
+			pockets[normal_pocket_idxs[i]] = new Pocket(normal_pocket_idxs[i]);
 		}
 		pockets[6] = new MancalaPocket(6);
 		pockets[13] = new MancalaPocket(13);
 		
 	    player_actions = new Stack<PlayerAction>();
 	    turn_flag = false;
+	    is_over = true;
 	}
 
 
 	public void initializeBoard(int stones_per_pocket)
 	{
+		is_over = false;
 		System.out.print("Starting up a game of mancala with " + stones_per_pocket + " stones per pocket!\n");
 		for(var i = 0; i < pockets.length; i++)
 		{
@@ -51,6 +56,7 @@ public class MancalaGame
 		}
 		pockets[6].stones = 0;
 		pockets[13].stones = 0;
+		
 	}
 	
 	public boolean doAction(int pocket_index)
@@ -74,42 +80,45 @@ public class MancalaGame
 	
 	public boolean isOver()
 	{
-		boolean player0_has_rocks = false;
-		boolean player1_has_rocks = false;
-		for(var i = 0; i < normal_pocket_idx.length/2; i++)
+		if(is_over) { return true; }
+		
+		boolean player0_has_stones = false;
+		boolean player1_has_stones = false;
+		for(var i = 0; i < normal_pocket_idxs.length/2; i++)
 		{
-			if(pockets[normal_pocket_idx[i]].getStones() > 0)
+			if(pockets[normal_pocket_idxs[i]].getStones() > 0)
 			{
-				player0_has_rocks = true;
+				player0_has_stones = true;
 				break;
 			}
 		}
 		
-		for(var i = normal_pocket_idx.length/2; i < normal_pocket_idx.length; i++)
+		for(var i = normal_pocket_idxs.length/2; i < normal_pocket_idxs.length; i++)
 		{
-			if(pockets[normal_pocket_idx[i]].getStones() > 0)
+			if(pockets[normal_pocket_idxs[i]].getStones() > 0)
 			{
-				player1_has_rocks = true;
+				player1_has_stones = true;
 				break;
 			}
 		}
 		
-		return ((!player0_has_rocks) || (!player1_has_rocks));
+		is_over = ((!player0_has_stones) || (!player1_has_stones));
+		return is_over;
 	}
 	
 	// Move all stones to their respective MancalaPocket
 	public void wrapUp()
 	{
-		for(var i = 0; i < normal_pocket_idx.length/2; i++)
+		for(var i = 0; i < normal_pocket_idxs.length/2; i++)
 		{
-			pockets[6].stones = pockets[6].stones + pockets[normal_pocket_idx[i]].getStones();
-			pockets[normal_pocket_idx[i]].stones = 0;
+			pockets[6].stones = pockets[6].stones + pockets[normal_pocket_idxs[i]].getStones();
+			pockets[normal_pocket_idxs[i]].stones = 0;
 		}
 		
-		for(var i = normal_pocket_idx.length/2; i < normal_pocket_idx.length; i++)
+		for(var i = normal_pocket_idxs.length/2; i < normal_pocket_idxs.length; i++)
 		{
-			pockets[13].stones = pockets[13].stones + pockets[normal_pocket_idx[i]].getStones();
-			pockets[normal_pocket_idx[i]].stones = 0;
+			pockets[13].stones = pockets[13].stones + pockets[normal_pocket_idxs[i]].getStones();
+			pockets[normal_pocket_idxs[i]].stones = 0;
 		}
 	}
 	
@@ -125,6 +134,7 @@ public class MancalaGame
 		}
 		return -1; // It's a tie.
 	}
+	
 	public void undo()
 	{
 		if(!player_actions.isEmpty())

@@ -23,6 +23,7 @@ public class Pocket implements Icon
 	
 	protected int width = 60;
 	protected int height = 60;
+	private boolean highlight = false;
 	
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y)
@@ -71,9 +72,24 @@ public class Pocket implements Icon
 		
 		
 		
+		
 
-        g2.drawString(pocket_name,c_x-(name_w/2),y+height-7);
+        if(highlight)
+        {
+			g2.setColor(Color.yellow);
+			g2.fill(pocket_outline);
+        }
+        else
+        {
+			g2.setColor(Color.white);
+			g2.fill(pocket_outline);
+        }
+		g2.setColor(Color.black);
 		g2.draw(pocket_outline);
+		
+		
+        g2.drawString(pocket_name,c_x-(name_w/2),y+height-7);
+		
 		for(int i = 0; i < stones_elipses.size(); i++)
 		{
 			g2.setColor(Color.black);
@@ -102,4 +118,6 @@ public class Pocket implements Icon
 	// Getters 
 	public int getIdx() { return idx; }
 	public int getStones() { return stones; }
+	
+	public void setHighlight(boolean highlight) { this.highlight = highlight; }
 }
