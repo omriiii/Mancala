@@ -1,4 +1,9 @@
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -25,33 +30,31 @@ public class MancalaUI
 		pocket_labels = new ArrayList<JLabel>();
 		
 		frame = new JFrame();
-		frame.setLayout(new FlowLayout());
-		
-		// Mancala Board
-		for(var i = 0; i < game.pockets.length; i++)
-		{
-			pocket_labels.add(new JLabel(game.pockets[i]));
-			frame.add(pocket_labels.get(i));
-		}
 
-		for(var i = 0; i < game.normal_pocket_idx.length; i++)
-		{
-			pocket_labels.get(game.normal_pocket_idx[i]).addMouseListener(createPocketListener());
-		}
+		// Mancala Board
+		addBoardToFrame(game);
 
 		// Buttons 
 		JButton start_game_btn = new JButton("Start Game");
 		start_game_btn.addActionListener(createStartGameListener());
+		start_game_btn.setSize(new Dimension(100, 40));
+		
 		
 		JButton undo_btn = new JButton("Undo");
-		start_game_btn.addActionListener(undoListener());
-
-		frame.add(start_game_btn);
+		undo_btn.addActionListener(undoListener());
+		undo_btn.setSize(new Dimension(100, 40));
+		
+		
+		addButtonToFrame(start_game_btn, 200, 150);
+		
+		//frame.add(start_game_btn);
 		frame.add(undo_btn);
+		
+		frame.add(new JLabel(""));
 		
 		// Display Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
+		frame.setSize(600, 300);
 		frame.setVisible(true);
 	}
 	
@@ -68,7 +71,11 @@ public class MancalaUI
 		return new MouseAdapter() {
 			public void mouseClicked(MouseEvent e)
 			{
-				game.doAction(((Pocket)((JLabel)e.getSource()).getIcon()).getIdx());
+				if(!game.doAction(((Pocket)((JLabel)e.getSource()).getIcon()).getIdx()))
+				{
+					JOptionPane.showMessageDialog(frame, "That's not your pocket!");
+					return;
+				}
 				
 				// Calculate if the game is over here!
 				if(game.isOver())
@@ -120,5 +127,60 @@ public class MancalaUI
 			}
 		};
 	}
+	
+	// Helper Methods
+	void addBoardToFrame(MancalaGame game)
+	{
+		int x;
+		int y;
+		
+
+		for(var i = 0; i < game.pockets.length; i++)
+		{
+			pocket_labels.add(new JLabel(game.pockets[i]));
+			
+			//frame.add(pocket_labels.get(i));
+			
+			
+			//c = new GridBagConstraints();
+			//c.anchor = c.FIRST_LINE_START;
+			//frame.add(pocket_labels.get(i), c);
+		}
+		
+		int[] upper_idxs = {12, 11, 10, 9, 8, 7};
+		int[] lower_idxs = {0, 1, 2, 3, 4, 5};
+		
+		addPocketToFrame(pocket_labels.get(13), 10, 10);
+		addPocketToFrame(pocket_labels.get(6), 10+(70*(upper_idxs.length+1)), 10);
+		
+		int cntr = 0;
+		for(int i = 0; i < upper_idxs.length; i++)
+		{
+			addPocketToFrame(pocket_labels.get(upper_idxs[i]), 10+(70*(i+1)), 10);
+			addPocketToFrame(pocket_labels.get(lower_idxs[i]), 10+(70*(i+1)), 80);
+		}
+
+		
+		for(var i = 0; i < game.normal_pocket_idx.length; i++)
+		{
+			pocket_labels.get(game.normal_pocket_idx[i]).addMouseListener(createPocketListener());
+		}
+		
+		
+	}
+	
+	void addPocketToFrame(JLabel l, int x, int y)
+	{
+		l.setBounds(x, y, ((Pocket) l.getIcon()).getIconWidth()+1, ((Pocket) l.getIcon()).getIconHeight()+1);
+		frame.add(l);
+	}
+	
+	
+	void addButtonToFrame(JButton b, int x, int y)
+	{
+		b.setBounds(x, y, b.getWidth(), b.getHeight());
+		frame.add(b);
+	}
+	
 	
 }

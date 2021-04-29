@@ -2,9 +2,8 @@
 public class MancalaTest 
 {
 	//  TODO
-	//	- Add pocket label next to pocket (eg. A1, A2, A3, A4, etc...)
 	//  - Make sure Pocket draws stones properly without having strange offsets
-	//  - Make sure the game board is being drawn correctly
+	//  - Make sure the game board is being drawn correctly (https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html)
 	//  - Implement undo functionality
 	//	- Add Board Style menu at the beginning and implement with Strategy pattern (Should probably do something simple like color of MancalaPocket)
 	//  - Add "player x turn" functionality (the next 2 tasks are dependent on it)

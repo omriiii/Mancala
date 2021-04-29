@@ -16,6 +16,7 @@ public class MancalaGame
 	Pocket[] pockets;
 	Stack<PlayerAction> player_actions;
 	final int[] normal_pocket_idx = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12};
+	boolean turn_flag;
 	
 	public MancalaGame()
 	{
@@ -37,6 +38,7 @@ public class MancalaGame
 		pockets[13] = new MancalaPocket(13);
 		
 	    player_actions = new Stack<PlayerAction>();
+	    turn_flag = true;
 	}
 
 
@@ -51,8 +53,11 @@ public class MancalaGame
 		pockets[13].stones = 0;
 	}
 	
-	public void doAction(int pocket_index)
+	public boolean doAction(int pocket_index)
 	{
+		if((turn_flag && pocket_index < 6) || (!turn_flag && pocket_index > 6)) { return false; }
+		
+		turn_flag = !turn_flag;
 		player_actions.add(new PlayerAction(pocket_index, pockets[pocket_index].stones));
 		int stones = pockets[pocket_index].stones;
 		pockets[pocket_index].stones = 0;
@@ -63,6 +68,8 @@ public class MancalaGame
 			pockets[pocket_index].stones++;
 			stones--;
 		}
+		
+		return true;
 	}
 	
 	public boolean isOver()

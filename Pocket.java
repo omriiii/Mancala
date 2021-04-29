@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -20,21 +21,20 @@ public class Pocket implements Icon
 		this.idx = idx;
 	}
 	
-	private int circle_r = 50;
-	private int width = 60;
-	private int height = 60;
+	protected int width = 60;
+	protected int height = 60;
 	
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y)
 	{
-		
+		// Pocket Outline
 		Graphics2D g2 = (Graphics2D) g;
-		Ellipse2D.Double pocket_outline = new Ellipse2D.Double(x, y, circle_r, circle_r);
+		Ellipse2D.Double pocket_outline = new Ellipse2D.Double(x, y, width, height);
 		
-
 		
-		int c_x = x+(circle_r/2); // pocket center x coordinate
-		int c_y = y+(circle_r/2); // pocket center y coordinate
+		// Pocket Stones
+		int c_x = x+(width/2); // pocket center x coordinate
+		int c_y = y+(height/2); // pocket center y coordinate
 		ArrayList<Ellipse2D.Double> stones_elipses = new ArrayList<Ellipse2D.Double>();
 		
 		int stone_cnt = stones;
@@ -62,7 +62,17 @@ public class Pocket implements Icon
 			
 			d_y = d_y - line_height;
 		}
+		
+		// Draw Pocket Label
+		String pocket_name;
+		if(idx < 6) { pocket_name = "A" + String.valueOf(idx+1); }
+		else { pocket_name = "B" + String.valueOf(idx-6); }
+		int name_w = (int) g2.getFontMetrics().getStringBounds(pocket_name, g2).getWidth();
+		
+		
+		
 
+        g2.drawString(pocket_name,c_x-(name_w/2),y+height-7);
 		g2.draw(pocket_outline);
 		for(int i = 0; i < stones_elipses.size(); i++)
 		{
