@@ -29,7 +29,7 @@ public class MancalaUI
 		this.game = game;
 		pocket_labels = new ArrayList<JLabel>();
 		
-		frame = new JFrame();
+		frame = new JFrame("Mancala");
 
 		// Mancala Board
 		addBoardToFrame(game);
@@ -45,16 +45,14 @@ public class MancalaUI
 		undo_btn.setSize(new Dimension(100, 40));
 		
 		
-		addButtonToFrame(start_game_btn, 200, 150);
-		
-		//frame.add(start_game_btn);
-		frame.add(undo_btn);
+		addButtonToFrame(start_game_btn, 190, 155);
+		addButtonToFrame(undo_btn, 300, 155);
 		
 		frame.add(new JLabel(""));
 		
 		// Display Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(600, 300);
+		frame.setSize(590, 240);
 		frame.setVisible(true);
 	}
 	
@@ -134,7 +132,6 @@ public class MancalaUI
 		int x;
 		int y;
 		
-
 		for(var i = 0; i < game.pockets.length; i++)
 		{
 			pocket_labels.add(new JLabel(game.pockets[i]));
@@ -159,14 +156,11 @@ public class MancalaUI
 			addPocketToFrame(pocket_labels.get(upper_idxs[i]), 10+(70*(i+1)), 10);
 			addPocketToFrame(pocket_labels.get(lower_idxs[i]), 10+(70*(i+1)), 80);
 		}
-
 		
 		for(var i = 0; i < game.normal_pocket_idx.length; i++)
 		{
 			pocket_labels.get(game.normal_pocket_idx[i]).addMouseListener(createPocketListener());
 		}
-		
-		
 	}
 	
 	void addPocketToFrame(JLabel l, int x, int y)

@@ -38,7 +38,7 @@ public class MancalaGame
 		pockets[13] = new MancalaPocket(13);
 		
 	    player_actions = new Stack<PlayerAction>();
-	    turn_flag = true;
+	    turn_flag = false;
 	}
 
 
