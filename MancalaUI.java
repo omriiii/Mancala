@@ -123,8 +123,12 @@ public class MancalaUI
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent event)
 			{
-				game.undo();
-				repaintBoard();
+				int undoSuccess = game.undo(); //should be 1 if successful, 0 if unsuccessful
+				if(undoSuccess == 1) // successful undo
+				{
+					updatePocketHighlights();
+					repaintBoard();
+				}
 			}
 		};
 	}
@@ -157,7 +161,7 @@ public class MancalaUI
 		int x;
 		int y;
 		
-		for(var i = 0; i < game.pockets.length; i++)
+		for(int i = 0; i < game.pockets.length; i++)
 		{
 			pocket_labels.add(new JLabel(game.pockets[i]));
 			
@@ -182,7 +186,7 @@ public class MancalaUI
 			addPocketToFrame(pocket_labels.get(lower_idxs[i]), 10+(70*(i+1)), 80);
 		}
 		
-		for(var i = 0; i < game.normal_pocket_idxs.length; i++)
+		for(int i = 0; i < game.normal_pocket_idxs.length; i++)
 		{
 			pocket_labels.get(game.normal_pocket_idxs[i]).addMouseListener(createPocketListener());
 		}
@@ -203,3 +207,4 @@ public class MancalaUI
 	
 	
 }
+

@@ -21,6 +21,21 @@ public class MancalaGame
 	boolean turn_flag;
 	boolean is_over;
 	
+	int pocketStones0;
+	int pocketStones1;
+	int pocketStones2;
+	int pocketStones3;
+	int pocketStones4;
+	int pocketStones5;
+	int pocketStones6;
+	int pocketStones7;
+	int pocketStones8;
+	int pocketStones9;
+	int pocketStones10;
+	int pocketStones11;
+	int pocketStones12;
+	int pocketStones13;
+	
 	public MancalaGame()
 	{
 		// 0  - A1
@@ -33,7 +48,7 @@ public class MancalaGame
 		// 12 - B6
 		// 13 - Player B mancala pocket
 		pockets = new Pocket[14];
-		for(var i = 0; i < normal_pocket_idxs.length; i++)
+		for(int i = 0; i < normal_pocket_idxs.length; i++)
 		{
 			pockets[normal_pocket_idxs[i]] = new Pocket(normal_pocket_idxs[i]);
 		}
@@ -50,7 +65,7 @@ public class MancalaGame
 	{
 		is_over = false;
 		System.out.print("Starting up a game of mancala with " + stones_per_pocket + " stones per pocket!\n");
-		for(var i = 0; i < pockets.length; i++)
+		for(int i = 0; i < pockets.length; i++)
 		{
 			pockets[i].stones = stones_per_pocket;
 		}
@@ -62,6 +77,22 @@ public class MancalaGame
 	public boolean doAction(int pocket_index)
 	{
 		if((turn_flag && pocket_index < 6) || (!turn_flag && pocket_index > 6)) { return false; }
+		
+		//Saving the previous state of the board before the action is made
+		pocketStones0 = pockets[0].getStones();
+		pocketStones1 = pockets[1].getStones();
+		pocketStones2 = pockets[2].getStones();
+		pocketStones3 = pockets[3].getStones();
+		pocketStones4 = pockets[4].getStones();
+		pocketStones5 = pockets[5].getStones();
+		pocketStones6 = pockets[6].getStones();
+		pocketStones7 = pockets[7].getStones();
+		pocketStones8 = pockets[8].getStones();
+		pocketStones9 = pockets[9].getStones();
+		pocketStones10 = pockets[10].getStones();
+		pocketStones11 = pockets[11].getStones();
+		pocketStones12 = pockets[12].getStones();
+		pocketStones13 = pockets[13].getStones();
 		
 		turn_flag = !turn_flag;
 		player_actions.add(new PlayerAction(pocket_index, pockets[pocket_index].stones));
@@ -84,7 +115,7 @@ public class MancalaGame
 		
 		boolean player0_has_stones = false;
 		boolean player1_has_stones = false;
-		for(var i = 0; i < normal_pocket_idxs.length/2; i++)
+		for(int i = 0; i < normal_pocket_idxs.length/2; i++)
 		{
 			if(pockets[normal_pocket_idxs[i]].getStones() > 0)
 			{
@@ -93,7 +124,7 @@ public class MancalaGame
 			}
 		}
 		
-		for(var i = normal_pocket_idxs.length/2; i < normal_pocket_idxs.length; i++)
+		for(int i = normal_pocket_idxs.length/2; i < normal_pocket_idxs.length; i++)
 		{
 			if(pockets[normal_pocket_idxs[i]].getStones() > 0)
 			{
@@ -109,13 +140,13 @@ public class MancalaGame
 	// Move all stones to their respective MancalaPocket
 	public void wrapUp()
 	{
-		for(var i = 0; i < normal_pocket_idxs.length/2; i++)
+		for(int i = 0; i < normal_pocket_idxs.length/2; i++)
 		{
 			pockets[6].stones = pockets[6].stones + pockets[normal_pocket_idxs[i]].getStones();
 			pockets[normal_pocket_idxs[i]].stones = 0;
 		}
 		
-		for(var i = normal_pocket_idxs.length/2; i < normal_pocket_idxs.length; i++)
+		for(int i = normal_pocket_idxs.length/2; i < normal_pocket_idxs.length; i++)
 		{
 			pockets[13].stones = pockets[13].stones + pockets[normal_pocket_idxs[i]].getStones();
 			pockets[normal_pocket_idxs[i]].stones = 0;
@@ -135,13 +166,32 @@ public class MancalaGame
 		return -1; // It's a tie.
 	}
 	
-	public void undo()
+	public int undo() //may have to make undo return something that signals that the undo was successful (so that we can control the highlight)
 	{
-		if(!player_actions.isEmpty())
+		if(!player_actions.isEmpty()) //&& game is not over? && undo is not called repeatedly
 		{
-			PlayerAction action = player_actions.pop();
-			// Do stuff here
+			PlayerAction action = player_actions.pop(); //the latest action, dont think we need to do anything with it
+
+			// Somehow return to previous state, possibly record the number of stones in each pocket before a move
+			pockets[0].stones = pocketStones0; 
+			pockets[1].stones = pocketStones1; 
+			pockets[2].stones = pocketStones2; 
+			pockets[3].stones = pocketStones3; 
+			pockets[4].stones = pocketStones4; 
+			pockets[5].stones = pocketStones5; 
+			pockets[6].stones = pocketStones6; 
+			pockets[7].stones = pocketStones7; 
+			pockets[8].stones = pocketStones8; 
+			pockets[9].stones = pocketStones9; 
+			pockets[10].stones = pocketStones10; 
+			pockets[11].stones = pocketStones11; 
+			pockets[12].stones = pocketStones12; 
+			pockets[13].stones = pocketStones13; 
+			
+			turn_flag = !turn_flag; //switch turn_flag to previous player
+			return 1;
 		}
+		return 0;
 	}
 
 	
