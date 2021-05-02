@@ -158,19 +158,9 @@ public class MancalaUI
 	// Helper Methods
 	void addBoardToFrame(MancalaGame game)
 	{
-		int x;
-		int y;
-		
 		for(int i = 0; i < game.pockets.length; i++)
 		{
 			pocket_labels.add(new JLabel(game.pockets[i]));
-			
-			//frame.add(pocket_labels.get(i));
-			
-			
-			//c = new GridBagConstraints();
-			//c.anchor = c.FIRST_LINE_START;
-			//frame.add(pocket_labels.get(i), c);
 		}
 		
 		int[] upper_idxs = {12, 11, 10, 9, 8, 7};
@@ -179,7 +169,6 @@ public class MancalaUI
 		addPocketToFrame(pocket_labels.get(13), 10, 10);
 		addPocketToFrame(pocket_labels.get(6), 10+(70*(upper_idxs.length+1)), 10);
 		
-		int cntr = 0;
 		for(int i = 0; i < upper_idxs.length; i++)
 		{
 			addPocketToFrame(pocket_labels.get(upper_idxs[i]), 10+(70*(i+1)), 10);
@@ -197,7 +186,6 @@ public class MancalaUI
 		l.setBounds(x, y, ((Pocket) l.getIcon()).getIconWidth()+1, ((Pocket) l.getIcon()).getIconHeight()+1);
 		frame.add(l);
 	}
-	
 	
 	void addButtonToFrame(JButton b, int x, int y)
 	{

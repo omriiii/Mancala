@@ -115,9 +115,10 @@ public class Pocket implements Icon
 		return height;
 	}
 	
-	// Getters 
+	// Getters & Setters
 	public int getIdx() { return idx; }
 	public int getStones() { return stones; }
 	
 	public void setHighlight(boolean highlight) { this.highlight = highlight; }
+	public void setStones(int stones) { this.stones = stones; }
 }

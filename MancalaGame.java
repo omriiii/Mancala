@@ -14,27 +14,12 @@ public class MancalaGame
 {
 	
 	Pocket[] pockets;
-	Stack<PlayerAction> player_actions;
+	Stack<ArrayList<Integer>> board_states;
 	final int[] player_a_normal_pocket_idxs = {0, 1, 2, 3, 4, 5,};
 	final int[] player_b_normal_pocket_idxs = {7, 8, 9, 10, 11, 12};
 	final int[] normal_pocket_idxs = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12};
 	boolean turn_flag;
 	boolean is_over;
-	
-	int pocketStones0;
-	int pocketStones1;
-	int pocketStones2;
-	int pocketStones3;
-	int pocketStones4;
-	int pocketStones5;
-	int pocketStones6;
-	int pocketStones7;
-	int pocketStones8;
-	int pocketStones9;
-	int pocketStones10;
-	int pocketStones11;
-	int pocketStones12;
-	int pocketStones13;
 	
 	public MancalaGame()
 	{
@@ -55,7 +40,7 @@ public class MancalaGame
 		pockets[6] = new MancalaPocket(6);
 		pockets[13] = new MancalaPocket(13);
 		
-	    player_actions = new Stack<PlayerAction>();
+		board_states = new Stack<ArrayList<Integer>>();
 	    turn_flag = false;
 	    is_over = true;
 	}
@@ -78,27 +63,21 @@ public class MancalaGame
 	{
 		if((turn_flag && pocket_index < 6) || (!turn_flag && pocket_index > 6)) { return false; }
 		
-		//Saving the previous state of the board before the action is made
-		pocketStones0 = pockets[0].getStones();
-		pocketStones1 = pockets[1].getStones();
-		pocketStones2 = pockets[2].getStones();
-		pocketStones3 = pockets[3].getStones();
-		pocketStones4 = pockets[4].getStones();
-		pocketStones5 = pockets[5].getStones();
-		pocketStones6 = pockets[6].getStones();
-		pocketStones7 = pockets[7].getStones();
-		pocketStones8 = pockets[8].getStones();
-		pocketStones9 = pockets[9].getStones();
-		pocketStones10 = pockets[10].getStones();
-		pocketStones11 = pockets[11].getStones();
-		pocketStones12 = pockets[12].getStones();
-		pocketStones13 = pockets[13].getStones();
+		// Saving the previous state of the board before the action is made
+		ArrayList<Integer> prior_board_state = new ArrayList<Integer>();
+		for(int i = 0; i < pockets.length; i++)
+		{
+			prior_board_state.add(pockets[i].getStones());
+		}
+		board_states.push(prior_board_state);
+		
 		
 		turn_flag = !turn_flag;
-		player_actions.add(new PlayerAction(pocket_index, pockets[pocket_index].stones));
 		int stones = pockets[pocket_index].stones;
 		pockets[pocket_index].stones = 0;
 		
+		
+		// Funny rules should probably be put around here
 		while(stones > 0)
 		{
 			pocket_index=(pocket_index+1)%pockets.length;
@@ -168,30 +147,16 @@ public class MancalaGame
 	
 	public int undo() //may have to make undo return something that signals that the undo was successful (so that we can control the highlight)
 	{
-		if(!player_actions.isEmpty()) //&& game is not over? && undo is not called repeatedly
-		{
-			PlayerAction action = player_actions.pop(); //the latest action, dont think we need to do anything with it
-
-			// Somehow return to previous state, possibly record the number of stones in each pocket before a move
-			pockets[0].stones = pocketStones0; 
-			pockets[1].stones = pocketStones1; 
-			pockets[2].stones = pocketStones2; 
-			pockets[3].stones = pocketStones3; 
-			pockets[4].stones = pocketStones4; 
-			pockets[5].stones = pocketStones5; 
-			pockets[6].stones = pocketStones6; 
-			pockets[7].stones = pocketStones7; 
-			pockets[8].stones = pocketStones8; 
-			pockets[9].stones = pocketStones9; 
-			pockets[10].stones = pocketStones10; 
-			pockets[11].stones = pocketStones11; 
-			pockets[12].stones = pocketStones12; 
-			pockets[13].stones = pocketStones13; 
+		if(board_states.isEmpty()) { return 0; }
 			
-			turn_flag = !turn_flag; //switch turn_flag to previous player
-			return 1;
+		ArrayList<Integer> board_state = board_states.pop();
+		for(int i = 0; i < board_state.size(); i++)
+		{
+			pockets[i].setStones(board_state.get(i));
 		}
-		return 0;
+
+		turn_flag = !turn_flag; //switch turn_flag to previous player
+		return 1;
 	}
 
 	
