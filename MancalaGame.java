@@ -20,6 +20,7 @@ public class MancalaGame
 	final int[] normal_pocket_idxs = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12};
 	boolean turn_flag;
 	boolean is_over;
+	int undo_timeout_cntr;
 	
 	public MancalaGame()
 	{
@@ -43,6 +44,7 @@ public class MancalaGame
 		board_states = new Stack<ArrayList<Integer>>();
 	    turn_flag = false;
 	    is_over = true;
+	    undo_timeout_cntr = 0;
 	}
 
 
@@ -62,6 +64,8 @@ public class MancalaGame
 	public boolean doAction(int pocket_index)
 	{
 		if((turn_flag && pocket_index < 6) || (!turn_flag && pocket_index > 6)) { return false; }
+		
+		undo_timeout_cntr--;
 		
 		// Saving the previous state of the board before the action is made
 		ArrayList<Integer> prior_board_state = new ArrayList<Integer>();
@@ -145,10 +149,11 @@ public class MancalaGame
 		return -1; // It's a tie.
 	}
 	
-	public int undo() //may have to make undo return something that signals that the undo was successful (so that we can control the highlight)
+	public boolean undo() //may have to make undo return something that signals that the undo was successful (so that we can control the highlight)
 	{
-		if(board_states.isEmpty()) { return 0; }
-			
+		if(board_states.isEmpty() || undo_timeout_cntr > 0) { return false; }
+		
+		undo_timeout_cntr = 2;
 		ArrayList<Integer> board_state = board_states.pop();
 		for(int i = 0; i < board_state.size(); i++)
 		{
@@ -156,7 +161,7 @@ public class MancalaGame
 		}
 
 		turn_flag = !turn_flag; //switch turn_flag to previous player
-		return 1;
+		return true;
 	}
 
 	

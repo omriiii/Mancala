@@ -123,11 +123,14 @@ public class MancalaUI
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent event)
 			{
-				int undoSuccess = game.undo(); //should be 1 if successful, 0 if unsuccessful
-				if(undoSuccess == 1) // successful undo
+				if(game.undo())
 				{
 					updatePocketHighlights();
 					repaintBoard();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame, "Unable to undo.");
 				}
 			}
 		};
