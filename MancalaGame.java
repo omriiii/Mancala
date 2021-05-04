@@ -56,10 +56,10 @@ public class MancalaGame
 		System.out.print("Starting up a game of mancala with " + stones_per_pocket + " stones per pocket!\n");
 		for(int i = 0; i < pockets.length; i++)
 		{
-			pockets[i].stones = stones_per_pocket;
+			pockets[i].setStones(stones_per_pocket);
 		}
-		pockets[6].stones = 0;
-		pockets[13].stones = 0;
+		pockets[6].setStones(0);
+		pockets[13].setStones(0);
 		
 	}
 	
@@ -79,15 +79,15 @@ public class MancalaGame
 		
 		
 		turn_flag = !turn_flag;
-		int stones = pockets[pocket_index].stones;
-		pockets[pocket_index].stones = 0;
+		int stones = pockets[pocket_index].getStones();
+		pockets[pocket_index].setStones(0);
 		
 		
 		// Funny rules should probably be put around here
 		while(stones > 0)
 		{
 			pocket_index=(pocket_index+1)%pockets.length;
-			pockets[pocket_index].stones++;
+			pockets[pocket_index].setStones(pockets[pocket_index].getStones()+1);
 			stones--;
 		}
 		
@@ -127,14 +127,14 @@ public class MancalaGame
 	{
 		for(int i = 0; i < normal_pocket_idxs.length/2; i++)
 		{
-			pockets[6].stones = pockets[6].stones + pockets[normal_pocket_idxs[i]].getStones();
-			pockets[normal_pocket_idxs[i]].stones = 0;
+			pockets[6].setStones(pockets[6].getStones() + pockets[normal_pocket_idxs[i]].getStones());
+			pockets[normal_pocket_idxs[i]].setStones(0);
 		}
 		
 		for(int i = normal_pocket_idxs.length/2; i < normal_pocket_idxs.length; i++)
 		{
-			pockets[13].stones = pockets[13].stones + pockets[normal_pocket_idxs[i]].getStones();
-			pockets[normal_pocket_idxs[i]].stones = 0;
+			pockets[13].setStones(pockets[13].getStones() + pockets[normal_pocket_idxs[i]].getStones());
+			pockets[normal_pocket_idxs[i]].setStones(0);
 		}
 	}
 	
