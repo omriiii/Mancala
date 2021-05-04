@@ -21,6 +21,7 @@ public class MancalaGame
 	boolean turn_flag;
 	boolean is_over;
 	int undo_timeout_cntr;
+	int undo_cntr;
 	
 	public MancalaGame()
 	{
@@ -45,6 +46,7 @@ public class MancalaGame
 	    turn_flag = false;
 	    is_over = true;
 	    undo_timeout_cntr = 0;
+	    undo_cntr = 3;
 	}
 
 
@@ -151,9 +153,16 @@ public class MancalaGame
 	
 	public boolean undo() //may have to make undo return something that signals that the undo was successful (so that we can control the highlight)
 	{
-		if(board_states.isEmpty() || undo_timeout_cntr > 0) { return false; }
+		if(undo_timeout_cntr == 0)
+		{
+			undo_timeout_cntr = 2;
+			undo_cntr = 3;
+		}
+		
+		if(board_states.isEmpty() || (undo_cntr == 0)) { return false; }
 		
 		undo_timeout_cntr = 2;
+		undo_cntr--;
 		ArrayList<Integer> board_state = board_states.pop();
 		for(int i = 0; i < board_state.size(); i++)
 		{
@@ -162,6 +171,14 @@ public class MancalaGame
 
 		turn_flag = !turn_flag; //switch turn_flag to previous player
 		return true;
+	}
+	
+	public void setPocketColors(CustomColors c)
+	{
+		for(int i = 0; i < pockets.length; i++)
+		{
+			pockets[i].setPocketBackgroundColor(c);
+		}
 	}
 
 	

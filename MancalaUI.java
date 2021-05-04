@@ -25,10 +25,16 @@ public class MancalaUI
 	ArrayList<JLabel> pocket_labels;
 	
 	public MancalaUI(MancalaGame game)
-	{
+	{	
+		
+		CustomColors c = getColorPerferenceFromUser();
+		game.setPocketColors(c);
+		
 		this.game = game;
 		pocket_labels = new ArrayList<JLabel>();
 		
+		//
+		// Primary game board
 		frame = new JFrame("Mancala");
 
 		// Mancala Board
@@ -57,14 +63,6 @@ public class MancalaUI
 		frame.setResizable(false);
 	}
 	
-	public void repaintBoard()
-	{
-		for(int i = 0; i < pocket_labels.size(); i++)
-		{
-			pocket_labels.get(i).repaint();
-		}
-	}
-
 	public MouseAdapter createPocketListener() 
 	{
 		return new MouseAdapter() {
@@ -111,6 +109,7 @@ public class MancalaUI
 			               null, 
 			               "4");
 				
+				
 				game.initializeBoard(Integer.parseInt(result));
 				updatePocketHighlights();
 				repaintBoard();
@@ -136,6 +135,31 @@ public class MancalaUI
 		};
 	}
 	
+	
+	public CustomColors getColorPerferenceFromUser()
+	{
+		Object[] options = {"Faded Salmon", "Faded Blue"};
+		int foo = JOptionPane.showOptionDialog(null,
+		      "Mancala Board Pocket Color Select",
+		      "Which background color would you like for the pockets?",
+		      JOptionPane.DEFAULT_OPTION,
+		      JOptionPane.WARNING_MESSAGE,
+		      null, options, options[0]);
+		
+		if(foo == 0) { return new FadedSalmon(); }
+		return new FadedBlue();
+		  
+	}
+	
+	// Repain + Updaters
+	public void repaintBoard()
+	{
+		for(int i = 0; i < pocket_labels.size(); i++)
+		{
+			pocket_labels.get(i).repaint();
+		}
+	}
+
 	void updatePocketHighlights()
 	{
 		

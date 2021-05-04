@@ -13,14 +13,15 @@ import javax.swing.Icon;
 
 public class Pocket implements Icon
 {
-	int stones = 0;
-	int idx;
+	protected int stones = 0;
+	protected int idx;
 	
 	public Pocket(int idx)
 	{
 		this.idx = idx;
 	}
 	
+	protected CustomColors bg_color;
 	protected int width = 60;
 	protected int height = 60;
 	private boolean highlight = false;
@@ -81,7 +82,7 @@ public class Pocket implements Icon
         }
         else
         {
-			g2.setColor(Color.white);
+			g2.setColor(bg_color.getColor());
 			g2.fill(pocket_outline);
         }
 		g2.setColor(Color.black);
@@ -102,6 +103,7 @@ public class Pocket implements Icon
 	{
 		return new Ellipse2D.Double(x-4, y-4, 7, 7);
 	}
+	
 
 	@Override
 	public int getIconWidth() 
@@ -121,4 +123,5 @@ public class Pocket implements Icon
 	
 	public void setHighlight(boolean highlight) { this.highlight = highlight; }
 	public void setStones(int stones) { this.stones = stones; }
+	public void setPocketBackgroundColor(CustomColors bg_color) { this.bg_color = bg_color; }
 }

@@ -62,7 +62,7 @@ public class MancalaPocket extends Pocket
 		
 
 
-		g2.setColor(Color.white);
+		g2.setColor(bg_color.getColor());
 		g2.fill(pocket_outline);
 		g2.setColor(Color.black);
 		g2.draw(pocket_outline);
