@@ -100,17 +100,31 @@ public class MancalaUI
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent event)
 			{
-				String result = (String) JOptionPane.showInputDialog(
-			               frame,
-			               "Enter the amount of stones per pocket", 
-			               "Mancala Game Option",            
-			               JOptionPane.PLAIN_MESSAGE,
-			               null,            
-			               null, 
-			               "4");
+				
+				int init_stone_cnt;
+				
+				do
+				{
+					String result = (String) JOptionPane.showInputDialog(
+				               frame,
+				               "Enter the amount of stones per pocket", 
+				               "Mancala Game Option",            
+				               JOptionPane.PLAIN_MESSAGE,
+				               null,            
+				               null, 
+				               "4");
+					
+					init_stone_cnt = Integer.parseInt(result);
+					if(init_stone_cnt > 4)
+					{
+						JOptionPane.showMessageDialog(frame, "The maximum amount of stones per pocket is 4!");
+					}
+					
+				} while(init_stone_cnt > 4);
 				
 				
-				game.initializeBoard(Integer.parseInt(result));
+				
+				game.initializeBoard(init_stone_cnt);
 				updatePocketHighlights();
 				repaintBoard();
 			}
