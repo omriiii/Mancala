@@ -16,16 +16,23 @@ public class Pocket implements Icon
 	protected int stones = 0;
 	protected int idx;
 	
-	public Pocket(int idx)
-	{
-		this.idx = idx;
-	}
-	
 	protected CustomColors bg_color;
 	protected int width = 60;
 	protected int height = 60;
 	private boolean highlight = false;
 	
+	/**
+	 * Creates a pocket with a given indentifier index
+	 * @param idx - The index identifier of the pocket
+	 */
+	public Pocket(int idx)
+	{
+		this.idx = idx;
+	}
+	
+	/**
+	 * Paints the pocket with the approrpriate amount of stones in the given x and y coordinate
+	 */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y)
 	{
@@ -99,18 +106,30 @@ public class Pocket implements Icon
 		}
 	}
 	
+	/**
+	 * Retuns an Elipse2D object of a stone in the given location
+	 * @param x - x coordinate of the stone
+	 * @param y - y coordinate of the stone
+	 * @return
+	 */
 	public Ellipse2D.Double makeStoneElipse(int x, int y)
 	{
 		return new Ellipse2D.Double(x-4, y-4, 7, 7);
 	}
 	
-
+	
+	/**
+	 * Returns the width of the pocket
+	 */
 	@Override
 	public int getIconWidth() 
 	{
 		return width;
 	}
 
+	/**
+	 * Returns the height of the pocket
+	 */
 	@Override
 	public int getIconHeight() 
 	{
@@ -118,10 +137,34 @@ public class Pocket implements Icon
 	}
 	
 	// Getters & Setters
+	
+	/**
+	 * Returns the index identifier of the pocket
+	 * @return - index identifier of the pocket
+	 */
+	
 	public int getIdx() { return idx; }
+	/**
+	 * Returns the amount of stones that are in the pocket
+	 * @return - amount of stones that are in the pocket
+	 */
 	public int getStones() { return stones; }
 	
+	/**
+	 * Sets if the current pocket should be highlighted or not
+	 * @param highlight - If you want the pocket to be highlighted (true/false)
+	 */
 	public void setHighlight(boolean highlight) { this.highlight = highlight; }
+	
+	/**
+	 * Sets the amount of stones inside this pocket
+	 * @param stones - The amount of stones you want this pocket instance to have
+	 */
 	public void setStones(int stones) { this.stones = stones; }
+	
+	/**
+	 * Sets the background's CustomColor object that dictates the color the background of the pocket will be drawn with
+	 * @param bg_color - The CustomColor object that dictates the color the background of the pocket
+	 */
 	public void setPocketBackgroundColor(CustomColors bg_color) { this.bg_color = bg_color; }
 }
