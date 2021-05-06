@@ -14,9 +14,11 @@ public class MancalaGame
 {
 	
 	Pocket[] pockets;
-	Stack<ArrayList<Integer>> board_states;
+	ArrayList<Integer> prior_board_state = null;
+	boolean last_turn;
+	
 	final int[] player_a_normal_pocket_idxs = {0, 1, 2, 3, 4, 5,};
-	final int[] player_b_normal_pocket_idxs = {7, 8, 9, 10, 11, 12};
+	final int[] player_b_normal_pocket_idxs = {12, 11, 10, 9, 8, 7};
 	final int[] normal_pocket_idxs = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12};
 	boolean turn_flag;
 	boolean is_over;
@@ -42,7 +44,6 @@ public class MancalaGame
 		pockets[6] = new MancalaPocket(6);
 		pockets[13] = new MancalaPocket(13);
 		
-		board_states = new Stack<ArrayList<Integer>>();
 	    turn_flag = false;
 	    is_over = true;
 	    undo_timeout_cntr = 0;
@@ -65,102 +66,62 @@ public class MancalaGame
 	
 	public boolean doAction(int pocket_index)
 	{
+		// turn_flag == false, player A
+		// turn_flag == true,  player B
+		
 		if((turn_flag && pocket_index < 6) || (!turn_flag && pocket_index > 6)) { return false; }
 		
 		undo_timeout_cntr--;
 		
 		// Saving the previous state of the board before the action is made
-		ArrayList<Integer> prior_board_state = new ArrayList<Integer>();
+		prior_board_state = new ArrayList<Integer>();
+		last_turn = !turn_flag;
 		for(int i = 0; i < pockets.length; i++)
 		{
 			prior_board_state.add(pockets[i].getStones());
 		}
-		board_states.push(prior_board_state);
 		
-		
-		turn_flag = !turn_flag;
 		int stones = pockets[pocket_index].getStones();
+		int[] valid_pockets = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+		if(turn_flag)
+		{
+			valid_pockets = new int[]{0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13};
+		}
+		
+		int i = 0;
+		while(pocket_index != valid_pockets[i]) { i++; }
+		
 		pockets[pocket_index].setStones(0);
-		int initPocket = pocket_index;
 
-		while(stones > 0) {
-			// Checking if last stones ends up in Mancala Pocket
-			if ((stones == 1 && pocket_index + 1 == 6 && initPocket < 6)
-					|| (stones == 1 && pocket_index + 1 == 13 && initPocket > 6)) {
-				turn_flag = !turn_flag;
-			}
-
-			//If stones end up in empty pocket, take adjacent pocket's stones
-			//For side A1 - A6
-			if (stones == 1 && pockets[pocket_index + 1 % pockets.length].stones == 0 && initPocket < 6) {
-				switch (pocket_index + 1 % pockets.length) {
-					case 1:
-						pockets[1].stones = pockets[11].stones;
-						pockets[11].stones = 0;
-						break;
-					case 2:
-						pockets[2].stones = pockets[10].stones;
-						pockets[10].stones = 0;
-						break;
-					case 3:
-						pockets[3].stones = pockets[9].stones;
-						pockets[9].stones = 0;
-						break;
-					case 4:
-						pockets[4].stones = pockets[8].stones;
-						pockets[8].stones = 0;
-						break;
-					case 5:
-						pockets[5].stones = pockets[7].stones;
-						pockets[7].stones = 0;
-						break;
-					case 13:
-						pockets[0].stones = pockets[12].stones+1;
-						pockets[12].stones = 0;
-						stones = 0;
-						break;
-				}
-			}
-			if (stones == 1 && pockets[pocket_index + 1 % pockets.length].stones == 0 && initPocket > 6) {
-				switch (pocket_index + 1 % pockets.length) {
-					case 8:
-						pockets[8].stones = pockets[4].stones;
-						pockets[4].stones = 0;
-						break;
-					case 9:
-						pockets[9].stones = pockets[3].stones;
-						pockets[3].stones = 0;
-						break;
-					case 10:
-						pockets[10].stones = pockets[2].stones;
-						pockets[2].stones = 0;
-						break;
-					case 11:
-						pockets[11].stones = pockets[1].stones;
-						pockets[1].stones = 0;
-						break;
-					case 12:
-						pockets[12].stones = pockets[0].stones;
-						pockets[0].stones = 0;
-						break;
-					case 6:
-						pockets[7].stones = pockets[5].stones+1;
-						pockets[5].stones = 0;
-						stones = 0;
-						break;
-				}
-			}
-
-			pocket_index = (pocket_index + 1) % pockets.length;
-
-			//do not add to opponent's Mancala
-			if ((pocket_index == 6 && initPocket > 6) || (pocket_index == 13 && initPocket < 6)) {
-				pocket_index = (pocket_index + 1) % pockets.length;
-			}
-
-			pockets[pocket_index].stones++;
+		while(stones > 0)
+		{
+			i = (i+1)%valid_pockets.length;
+			pocket_index = valid_pockets[i];
+			pockets[pocket_index].setStones(pockets[pocket_index].getStones()+1);
 			stones--;
 		}
+		
+		// Check if putting stone in an empty pocket on your side
+		if((pockets[pocket_index].getStones() == 1) && ((!turn_flag && (pocket_index < 6)) || (turn_flag && (pocket_index > 6) && pocket_index != 13)))
+		{
+			int stolen_stones = 1;
+			pockets[pocket_index].setStones(0);
+
+			int adj_pocket_idx = Math.abs(pocket_index-12);
+			stolen_stones = stolen_stones + pockets[adj_pocket_idx].getStones();
+			pockets[adj_pocket_idx].setStones(0);
+			
+			if(!turn_flag) { pockets[6].setStones(pockets[6].getStones()+stolen_stones); }
+			else { pockets[13].setStones(pockets[13].getStones()+stolen_stones); }
+		}
+			
+		// Check if putting stone in my own Mancala Pocket
+		if((!turn_flag && pocket_index == 6) || (turn_flag && pocket_index == 13))
+		{
+			turn_flag = !turn_flag; // flip the flag twice
+		}
+		
+		turn_flag = !turn_flag;
 		
 		return true;
 	}
@@ -224,21 +185,22 @@ public class MancalaGame
 	
 	public boolean undo() //may have to make undo return something that signals that the undo was successful (so that we can control the highlight)
 	{
-		if(undo_timeout_cntr == 0)
+		if(undo_timeout_cntr <= 0)
 		{
 			undo_timeout_cntr = 2;
 			undo_cntr = 3;
 		}
 		
-		if(board_states.isEmpty() || (undo_cntr == 0)) { return false; }
+		if(prior_board_state == null || (undo_cntr == 0)) { return false; }
 		
 		undo_timeout_cntr = 2;
 		undo_cntr--;
-		ArrayList<Integer> board_state = board_states.pop();
-		for(int i = 0; i < board_state.size(); i++)
+		for(int i = 0; i < prior_board_state.size(); i++)
 		{
-			pockets[i].setStones(board_state.get(i));
+			pockets[i].setStones(prior_board_state.get(i));
 		}
+		turn_flag = last_turn;
+		prior_board_state = null;
 
 		turn_flag = !turn_flag; //switch turn_flag to previous player
 		return true;

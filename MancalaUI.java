@@ -204,8 +204,8 @@ public class MancalaUI
 			pocket_labels.add(new JLabel(game.pockets[i]));
 		}
 		
-		int[] upper_idxs = {12, 11, 10, 9, 8, 7};
-		int[] lower_idxs = {0, 1, 2, 3, 4, 5};
+		int[] upper_idxs = game.player_b_normal_pocket_idxs;
+		int[] lower_idxs = game.player_a_normal_pocket_idxs;
 		
 		addPocketToFrame(pocket_labels.get(13), 10, 10);
 		addPocketToFrame(pocket_labels.get(6), 10+(70*(upper_idxs.length+1)), 10);
