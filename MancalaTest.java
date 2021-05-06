@@ -1,11 +1,5 @@
 public class MancalaTest 
 {
-	/*
-	TODO
-		- Add JavaDoc documentation to all functions and stuff
-		- Make sure player can't press on empty pokcetss
-	*/
-	
 	/**
 	 * Starts a Mancala Game
 	 * @param args - Please leave blank!
