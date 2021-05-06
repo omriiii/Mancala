@@ -81,13 +81,84 @@ public class MancalaGame
 		turn_flag = !turn_flag;
 		int stones = pockets[pocket_index].getStones();
 		pockets[pocket_index].setStones(0);
-		
-		
-		// Funny rules should probably be put around here
-		while(stones > 0)
-		{
-			pocket_index=(pocket_index+1)%pockets.length;
-			pockets[pocket_index].setStones(pockets[pocket_index].getStones()+1);
+		int initPocket = pocket_index;
+
+		while(stones > 0) {
+			// Checking if last stones ends up in Mancala Pocket
+			if ((stones == 1 && pocket_index + 1 == 6 && initPocket < 6)
+					|| (stones == 1 && pocket_index + 1 == 13 && initPocket > 6)) {
+				turn_flag = !turn_flag;
+			}
+
+			//If stones end up in empty pocket, take adjacent pocket's stones
+			//For side A1 - A6
+			if (stones == 1 && pockets[pocket_index + 1 % pockets.length].stones == 0 && initPocket < 6) {
+				switch (pocket_index + 1 % pockets.length) {
+					case 1:
+						pockets[1].stones = pockets[11].stones;
+						pockets[11].stones = 0;
+						break;
+					case 2:
+						pockets[2].stones = pockets[10].stones;
+						pockets[10].stones = 0;
+						break;
+					case 3:
+						pockets[3].stones = pockets[9].stones;
+						pockets[9].stones = 0;
+						break;
+					case 4:
+						pockets[4].stones = pockets[8].stones;
+						pockets[8].stones = 0;
+						break;
+					case 5:
+						pockets[5].stones = pockets[7].stones;
+						pockets[7].stones = 0;
+						break;
+					case 13:
+						pockets[0].stones = pockets[12].stones+1;
+						pockets[12].stones = 0;
+						stones = 0;
+						break;
+				}
+			}
+			if (stones == 1 && pockets[pocket_index + 1 % pockets.length].stones == 0 && initPocket > 6) {
+				switch (pocket_index + 1 % pockets.length) {
+					case 8:
+						pockets[8].stones = pockets[4].stones;
+						pockets[4].stones = 0;
+						break;
+					case 9:
+						pockets[9].stones = pockets[3].stones;
+						pockets[3].stones = 0;
+						break;
+					case 10:
+						pockets[10].stones = pockets[2].stones;
+						pockets[2].stones = 0;
+						break;
+					case 11:
+						pockets[11].stones = pockets[1].stones;
+						pockets[1].stones = 0;
+						break;
+					case 12:
+						pockets[12].stones = pockets[0].stones;
+						pockets[0].stones = 0;
+						break;
+					case 6:
+						pockets[7].stones = pockets[5].stones+1;
+						pockets[5].stones = 0;
+						stones = 0;
+						break;
+				}
+			}
+
+			pocket_index = (pocket_index + 1) % pockets.length;
+
+			//do not add to opponent's Mancala
+			if ((pocket_index == 6 && initPocket > 6) || (pocket_index == 13 && initPocket < 6)) {
+				pocket_index = (pocket_index + 1) % pockets.length;
+			}
+
+			pockets[pocket_index].stones++;
 			stones--;
 		}
 		
