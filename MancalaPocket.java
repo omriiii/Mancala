@@ -8,13 +8,20 @@ import java.util.ArrayList;
 
 public class MancalaPocket extends Pocket
 {
+	/**
+	 * Create a MancalaPokcet with a given index identifier
+	 * @param idx - Indentifier of the pocket
+	 */
 	public MancalaPocket(int idx) 
 	{
 		super(idx);
 		height = 130;
 	}
 
-	
+
+	/**
+	 * Draw the MancalaPocket with the appropriate amount of stones in the given location
+	 */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y)
 	{

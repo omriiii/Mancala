@@ -25,6 +25,9 @@ public class MancalaGame
 	int undo_timeout_cntr;
 	int undo_cntr;
 	
+	/**
+	 * Constructor for the MancalaGame object
+	 */
 	public MancalaGame()
 	{
 		// 0  - A1
@@ -51,6 +54,10 @@ public class MancalaGame
 	}
 
 
+	/**
+	 * Initializes the board with the proper parameters to start the game
+	 * @param stones_per_pocket - Amount of stones per pocket to start the game with
+	 */
 	public void initializeBoard(int stones_per_pocket)
 	{
 		is_over = false;
@@ -64,12 +71,18 @@ public class MancalaGame
 		
 	}
 	
-	public boolean doAction(int pocket_index)
+	/**
+	 * Makes a move of moving the stones in the given pocket index
+	 * @param pocket_index - Pocket index the player wishes to move the stones for
+	 * @return whether or not the move abides by the rules of the game (0=ok, 1=pokcet empty, 2=incorrect player's pocket)
+	 */
+	public int doAction(int pocket_index)
 	{
 		// turn_flag == false, player A
 		// turn_flag == true,  player B
-		
-		if((turn_flag && pocket_index < 6) || (!turn_flag && pocket_index > 6)) { return false; }
+
+		if((turn_flag && pocket_index < 6) || (!turn_flag && pocket_index > 6)) { return 2; }
+		if(pockets[pocket_index].getStones() == 0) { return 1; }
 		
 		undo_timeout_cntr--;
 		
@@ -123,9 +136,13 @@ public class MancalaGame
 		
 		turn_flag = !turn_flag;
 		
-		return true;
+		return 0;
 	}
 	
+	/**
+	 * Checks if the game is over and if not, verifies if it's true.
+	 * @return if the game is over.
+	 */
 	public boolean isOver()
 	{
 		if(is_over) { return true; }
@@ -154,7 +171,9 @@ public class MancalaGame
 		return is_over;
 	}
 	
-	// Move all stones to their respective MancalaPocket
+	/**
+	 * Move all stones to their respective MancalaPocket once the game is over.
+	 */
 	public void wrapUp()
 	{
 		for(int i = 0; i < normal_pocket_idxs.length/2; i++)
@@ -170,6 +189,10 @@ public class MancalaGame
 		}
 	}
 	
+	/**
+	 * Gets the winner of the match by comapring the respective player's MancalaPockets
+	 * @return 0 if player 1 won, 1 if player 2 won, -1 if it's a tie.
+	 */
 	public int getWinner()
 	{
 		if(pockets[6].getStones() < pockets[13].getStones())
@@ -183,7 +206,12 @@ public class MancalaGame
 		return -1; // It's a tie.
 	}
 	
-	public boolean undo() //may have to make undo return something that signals that the undo was successful (so that we can control the highlight)
+	
+	/**
+	 * Undos the player's last turn given that it's within the rules of the match
+	 * @return if the undo was successful and abides in the rule of the game (true/false)
+	 */
+	public boolean undo() 
 	{
 		if(undo_timeout_cntr <= 0)
 		{
@@ -206,6 +234,10 @@ public class MancalaGame
 		return true;
 	}
 	
+	/**
+	 * Sets the pocket's background color getter object
+	 * @param c - CustomColor object that contains the wanted pocket background color
+	 */
 	public void setPocketColors(CustomColors c)
 	{
 		for(int i = 0; i < pockets.length; i++)

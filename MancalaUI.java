@@ -24,15 +24,24 @@ public class MancalaUI
 	
 	ArrayList<JLabel> pocket_labels;
 	
+	/**
+	 * Starts up the MancalaUI instance that can create a user interface for the given MancalaGame instance
+	 * @param game - MancalaGame instance you'd like have a user interface for
+	 */
 	public MancalaUI(MancalaGame game)
-	{	
-		
+	{
 		CustomColors c = getColorPerferenceFromUser();
 		game.setPocketColors(c);
 		
 		this.game = game;
 		pocket_labels = new ArrayList<JLabel>();
-		
+	}
+	
+	/**
+	 * Starts up the UI for the Mancala Game
+	 */
+	public void run()
+	{
 		//
 		// Primary game board
 		frame = new JFrame("Mancala");
@@ -63,15 +72,25 @@ public class MancalaUI
 		frame.setResizable(false);
 	}
 	
+	/**
+	 * Creates a listener to note when players click on the pocket
+	 * @return the listener itself
+	 */
 	public MouseAdapter createPocketListener() 
 	{
 		return new MouseAdapter() {
 			public void mouseClicked(MouseEvent e)
 			{
-				if(!game.doAction(((Pocket)((JLabel)e.getSource()).getIcon()).getIdx()))
+				int ret = game.doAction(((Pocket)((JLabel)e.getSource()).getIcon()).getIdx());
+				switch(ret)
 				{
-					JOptionPane.showMessageDialog(frame, "That's not your pocket!");
-					return;
+					case 1:
+						JOptionPane.showMessageDialog(frame, "Can't make a move an on empty pocket");
+						return;
+						
+					case 2:
+						JOptionPane.showMessageDialog(frame, "That's not your pocket!");
+						return;
 				}
 				
 				// Calculate if the game is over here!
@@ -94,7 +113,11 @@ public class MancalaUI
 			}
 		};
 	}
-	
+
+	/**
+	 * Creates a listener to the start game button and actually start the game
+	 * @return the listener itself
+	 */
 	public ActionListener createStartGameListener()
 	{
 		return new ActionListener() {
@@ -131,6 +154,10 @@ public class MancalaUI
 		};
 	}
 
+	/**
+	 * Creates a listener to the undo button that triggers the undo function
+	 * @return the listener itself
+	 */
 	public ActionListener undoListener()
 	{
 		return new ActionListener() {
@@ -149,7 +176,11 @@ public class MancalaUI
 		};
 	}
 	
-	
+
+	/**
+	 * Creates a dialogue option that asks the player which background color for the Mancala board they prefer
+	 * @return a CustomColor instance with the wanted background color.
+	 */
 	public CustomColors getColorPerferenceFromUser()
 	{
 		Object[] options = {"Faded Salmon", "Faded Blue"};
@@ -165,7 +196,11 @@ public class MancalaUI
 		  
 	}
 	
-	// Repain + Updaters
+	// Repaint + Updaters
+	
+	/**
+	 * Repaints the mancala board
+	 */
 	public void repaintBoard()
 	{
 		for(int i = 0; i < pocket_labels.size(); i++)
@@ -174,6 +209,9 @@ public class MancalaUI
 		}
 	}
 
+	/**
+	 * Updates the highlights of the mancala board to be that of the player's whose turn it is
+	 */
 	void updatePocketHighlights()
 	{
 		
@@ -197,6 +235,11 @@ public class MancalaUI
 	}
 	
 	// Helper Methods
+	
+	/**
+	 * Adds the Mancala Board to the JFrame
+	 * @param game - Instance game that contains the board we want to show
+	 */
 	void addBoardToFrame(MancalaGame game)
 	{
 		for(int i = 0; i < game.pockets.length; i++)
@@ -222,12 +265,24 @@ public class MancalaUI
 		}
 	}
 	
+	/**
+	 * Adds a pocket to the JFrame
+	 * @param l - JLabel containing the pocket
+	 * @param x - x coordinate inside the jframe
+	 * @param y - y coordinate inside the jframe
+	 */
 	void addPocketToFrame(JLabel l, int x, int y)
 	{
 		l.setBounds(x, y, ((Pocket) l.getIcon()).getIconWidth()+1, ((Pocket) l.getIcon()).getIconHeight()+1);
 		frame.add(l);
 	}
 	
+	/**
+	 * Adds a button to the Jframe
+	 * @param b - JButton of the button you want to add
+	 * @param x - x coordinate inside the jframe
+	 * @param y - y coordinate inside the jframe
+	 */
 	void addButtonToFrame(JButton b, int x, int y)
 	{
 		b.setBounds(x, y, b.getWidth(), b.getHeight());
